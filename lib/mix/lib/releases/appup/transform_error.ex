@@ -16,14 +16,14 @@ defmodule Mix.Releases.Appup.TransformError do
           "The appup transformation #{m}.#{cb}/5 incorrectly " <>
             "placed :restart_new_emulator which must always be the first instruction"
 
-        %__MODULE__{message: msg, module: m, callback: cb}
+        struct(@struct, message: msg, module: m, callback: cb)
 
       {:invalid_instruction, :restart_emulator} ->
         msg =
           "The appup transformation #{m}.#{cb}/5 incorrectly " <>
             "placed :restart_emulator which must always be the last instruction"
 
-        %__MODULE__{message: msg, module: m, callback: cb}
+        struct(@struct, message: msg, module: m, callback: cb)
 
       {:invalid_instruction, i} ->
         msg =
@@ -31,14 +31,14 @@ defmodule Mix.Releases.Appup.TransformError do
             "(#{inspect(i)}).\n" <>
             "Please review http://erlang.org/doc/design_principles/release_handling.html for a listing of valid instructions"
 
-        %__MODULE__{message: msg, module: m, callback: cb}
+        struct(@struct, message: msg, module: m, callback: cb)
 
       {:invalid_return, val} ->
         msg =
           "The appup transformation #{m}.#{cb}/5 returned an invalid value.\n" <>
             "  Expected a list of appup instructions, but got: #{inspect(val)}"
 
-        %__MODULE__{message: msg, module: m, callback: cb}
+        struct(@struct, message: msg, module: m, callback: cb)
     end
   end
 end

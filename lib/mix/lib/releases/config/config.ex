@@ -559,7 +559,8 @@ defmodule Mix.Releases.Config do
     default_env = Map.get(config, :default_environment)
     default_release = Map.get(config, :default_release)
 
-    %__MODULE__{default_environment: default_env, default_release: default_release}
+    @struct
+    |> struct(default_environment: default_env, default_release: default_release)
     |> to_struct(:environments, Map.get(config, :environments, []))
     |> to_struct(:releases, Map.get(config, :releases, []))
   end

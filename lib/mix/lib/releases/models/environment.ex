@@ -17,5 +17,5 @@ defmodule Mix.Releases.Environment do
   """
   @spec new(atom()) :: t()
   def new(name) when is_atom(name),
-    do: %__MODULE__{name: name, profile: %Profile{}}
+    do: struct(@struct, name: name, profile: %Profile{})
 end

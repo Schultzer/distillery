@@ -77,7 +77,7 @@ defmodule Mix.Releases.Release do
   def new(name, version, apps \\ []) do
     build_path = Mix.Project.build_path()
     output_dir = Path.relative_to_cwd(Path.join([build_path, "rel", "#{name}"]))
-    definition = %__MODULE__{name: name, version: version}
+    definition = struct(@struct, name: name, version: version)
 
     %__MODULE__{
       definition
@@ -255,16 +255,16 @@ defmodule Mix.Releases.Release do
     env_profile = Map.from_struct(env.profile)
 
     profile =
-      Enum.reduce(env_profile, rel_profile, fn 
+      Enum.reduce(env_profile, rel_profile, fn
         {:plugins, ps}, acc when ps not in [nil, []] ->
           # Merge plugins
           rel_plugins = Map.get(acc, :plugins, [])
           Map.put(acc, :plugins, rel_plugins ++ ps)
         {k, v}, acc ->
           case v do
-            ignore when ignore in [nil, []] -> 
+            ignore when ignore in [nil, []] ->
               acc
-            _ -> 
+            _ ->
               Map.put(acc, k, v)
           end
       end)
@@ -504,6 +504,7 @@ defmodule Mix.Releases.Release do
     do: :ok
 
   defp add_apps(dg, as, [app | apps]) do
+    IO.inspect app
     add_app(dg, as, nil, app)
     add_apps(dg, as, apps)
   end
@@ -515,7 +516,14 @@ defmodule Mix.Releases.Release do
   end
 
   defp add_app(dg, as, parent, name) do
-    do_add_app(dg, as, parent, App.new(name))
+    case :digraph.vertex(dg, name) do
+      false ->
+        do_add_app(dg, as, parent, App.new(name))
+
+      _ ->
+        # Already visited
+        :ok
+    end
   end
 
   defp do_add_app(dg, as, parent, app) do

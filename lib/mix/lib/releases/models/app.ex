@@ -54,15 +54,7 @@ defmodule Mix.Releases.App do
         apps = Keyword.get(spec, :applications, [])
         included = Keyword.get(spec, :included_applications, [])
         path = Application.app_dir(name)
-
-        %__MODULE__{
-          name: name,
-          vsn: vsn,
-          start_type: start_type,
-          applications: apps,
-          included_applications: included,
-          path: path
-        }
+        struct(@struct, name: name, vsn: vsn, start_type: start_type, applications: apps, included_applications: included, path: path)
     end
   end
 

@@ -20,7 +20,7 @@ defmodule Mix.Releases.Archiver.Archive do
   """
   @spec new(name :: String.t(), path) :: t
   def new(name, working_dir) when is_binary(name) when is_binary(working_dir) do
-    %__MODULE__{name: name, working_dir: working_dir, manifest: %{}}
+    struct(@struct, name: name, working_dir: working_dir, manifest: %{})
   end
 
   @doc """
